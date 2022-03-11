@@ -29,6 +29,8 @@ public class Instance {
     /************************************************
      **** debut methodes fournies              ******
      *************************************************/
+
+    // useless
     public Instance(boolean[][] p, Coord s, int kk, int hh) {
         plateau = p;
         startingP = s;
@@ -201,10 +203,26 @@ public class Instance {
 
     public boolean estValide(Solution s) {
         //prérequis : s!=null, et les s.get(i) !=null pour tout i (mais par contre s peut contenir n'importe quelle séquence de coordonnées)
-        //retourne vrai ssi s est une solution valide (une solution est valide ssi c'est une liste de coordonnées de taille au plus k+1, telle que deux coordonnées consécutives sont à distance 1,
+        //retourne vrai ssi s est une solution valide (une solution est valide ssi c'est une liste de coordonnées de
+        // taille au plus k+1, telle que deux coordonnées consécutives sont à distance 1,
         // et les coordonnées ne sortent pas du plateau)
 
-        //à compléter
+        boolean estValide = true;
+
+        if (s.size() > this.k + 1) {
+            return false;
+        }
+
+        int indiceCoordCourante = 0;
+
+        while (estValide && indiceCoordCourante < s.size() - 1) { // sinon on a du out of bound
+            // la case suivante est bien voisine
+            estValide = s.get(indiceCoordCourante).estADistanceUn(s.get(indiceCoordCourante + 1));
+            // la case courante est bien dans le plateau
+            estValide = s.get(indiceCoordCourante).estDansPlateau(this.getNbL(), this.getNbC());
+            indiceCoordCourante += 1;
+        }
+
         return true;
     }
 
@@ -212,10 +230,11 @@ public class Instance {
     public int evaluerSolution(Solution s) {
         //prerequis : s est valide (et donc !=null)
         //action : retourne le nombre de pièces ramassées par s (et ne doit pas modifier this ni s)
-
-        //à compléter
-
-        return 0;
+        int nbPieces = 0;
+        for (Coord coordCourante : s) {
+            nbPieces = this.piecePresente(coordCourante) ? nbPieces + 1 : nbPieces;
+        }
+        return nbPieces;
     }
 
 
@@ -257,8 +276,30 @@ public class Instance {
         //on doit retourner (0,2,1)
 
         //a compléter
+        ArrayList<Integer> permutation = new ArrayList<>();
+        Coord coordCourante = this.startingP;
+        ArrayList<Coord> listePiece = new ArrayList<>(this.getListeCoordPieces());
 
-        return null;
+        while (listePiece.size() > 0 ) {
+            Coord pieceAAjouter = this.coordPiecePlusProche(coordCourante, listePiece);
+            permutation.add(this.listeCoordPieces.indexOf(pieceAAjouter));
+            listePiece.remove(pieceAAjouter);
+            coordCourante = pieceAAjouter;
+        }
+
+        return permutation;
+    }
+
+    private Coord coordPiecePlusProche(Coord coord, ArrayList<Coord> listePiece) {
+        Coord plusProche = listePiece.get(0);
+
+        for(Coord piece: listePiece){
+            if (coord.distanceFrom(piece) < coord.distanceFrom(plusProche)){
+                plusProche = piece;
+            }
+        }
+
+        return plusProche;
     }
 
 
@@ -281,6 +322,18 @@ public class Instance {
         // et on s'arrête avant d'avoir fait k pas car on a tout collecté)
 
         //a compléter
+        Solution sol = new Solution();
+        Coord coordCourante = this.startingP;
+        int kRestant = this.k;
+        int nbPiecePrise = 0;
+
+
+        // il faut qu'on trouve le chemin d'un piece a une autre
+
+        while( kRestant - coordCourante.distanceFrom(this.getListeCoordPieces().get(permut.get(nbPiecePrise))) >= 0 ) {
+            kRestant -= coordCourante.distanceFrom(this.getListeCoordPieces().get(permut.get(nbPiecePrise)));
+            nbPiecePrise += 1;
+        }
 
         return null;
     }
