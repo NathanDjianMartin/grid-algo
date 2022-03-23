@@ -278,7 +278,7 @@ public class Instance {
         //a compléter
         ArrayList<Integer> permutation = new ArrayList<>();
         Coord coordCourante = this.startingP;
-        ArrayList<Coord> listePiece = new ArrayList<>(this.getListeCoordPieces());
+        ArrayList<Coord> listePiece = new ArrayList<>(this.getListeCoordPieces()); // on ne veut pas modifier la liste originale
 
         while (listePiece.size() > 0 ) {
             Coord pieceAAjouter = this.coordPiecePlusProche(coordCourante, listePiece);
@@ -290,6 +290,13 @@ public class Instance {
         return permutation;
     }
 
+    /**
+     * Retourne la coordonée de la pièce la plus proche de la coordonnée passée en paramètre. S'il y en a plusieurs,
+     * en choisit une aribitrairement.
+     * @param coord
+     * @param listePiece
+     * @return
+     */
     private Coord coordPiecePlusProche(Coord coord, ArrayList<Coord> listePiece) {
         Coord plusProche = listePiece.get(0);
 
@@ -303,6 +310,7 @@ public class Instance {
     }
 
 
+    // la permutation c'est l'ordre dans lequel on va tenter de ramasser les pièces
     public Solution calculerSol(ArrayList<Integer> permut) {
 
         //prérequis : permut est une permutation des entiers {0,..,listeCoordPieces.size()-1}
@@ -322,23 +330,58 @@ public class Instance {
         // et on s'arrête avant d'avoir fait k pas car on a tout collecté)
 
         //a compléter
-        Solution sol = new Solution();
+        Solution sol = new Solution(this.startingP);
         Coord coordCourante = this.startingP;
         int kRestant = this.k;
         int nbPiecePrise = 0;
 
-
-        // il faut qu'on trouve le chemin d'un piece a une autre
-
-        while( kRestant - coordCourante.distanceFrom(this.getListeCoordPieces().get(permut.get(nbPiecePrise))) >= 0 ) {
-            kRestant -= coordCourante.distanceFrom(this.getListeCoordPieces().get(permut.get(nbPiecePrise)));
+        // Tant qu'il reste des pièces ou qu'on a du chemin restant
+        while(nbPiecePrise < permut.size() && kRestant > 0 ) {
+            // Calcul le chemin jusqu'a la prochaine piece
+            ArrayList<Coord> chemin = chemin(coordCourante,this.getListeCoordPieces().get(permut.get(nbPiecePrise)));
+            // La coordonnée courante devient la pièce que l'on veut prendre
+            coordCourante = this.getListeCoordPieces().get(permut.get(nbPiecePrise));
+            // on augmente ne nombre de pièce prise
+            // même si au final on ne peut pas la prendre car le nombre de k restant n'est pas suffisant, cette variable
+            // nous sert juste pour la condition du while
             nbPiecePrise += 1;
+
+            // on ajoute les coord du chemin dans notre solution tant qu'il nous reste des k
+            int i = 0;
+            while (kRestant > 0 && i < chemin.size()) {
+                sol.add(chemin.get(i));
+                kRestant -= 1;
+                i += 1;
+            }
         }
 
-        return null;
+        return sol;
     }
 
-
+    private ArrayList<Coord> chemin(Coord piece1, Coord piece2) {
+        ArrayList<Coord> result = new ArrayList<>();
+        while (piece1.getC() != piece2.getC()){
+            Coord newCoord;
+            if (piece1.getC() < piece2.getC()){
+                newCoord = new Coord(piece1.getL(), piece1.getC() + 1);
+            } else {
+                newCoord = new Coord(piece1.getL(), piece1.getC() - 1);
+            }
+            result.add(newCoord);
+            piece1 = newCoord;
+        }
+        while (piece1.getL() != piece2.getL()){
+            Coord newCoord;
+            if (piece1.getL() < piece2.getL()){
+                newCoord = new Coord(piece1.getL() + 1, piece1.getC());
+            } else {
+                newCoord = new Coord(piece1.getL() - 1, piece1.getC());
+            }
+            result.add(newCoord);
+            piece1 = newCoord;
+        }
+        return result;
+    }
 
     /************************************************
      **** fin algo algo greedy                      ******
