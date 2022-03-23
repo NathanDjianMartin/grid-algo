@@ -22,4 +22,8 @@ public class InstanceDec {
     public int hashCode() {
         return Objects.hash(i, c);
     }
+
+    public InstanceDec copy() {
+        return new InstanceDec(this.i.copy(), this.c);
+    }
 }

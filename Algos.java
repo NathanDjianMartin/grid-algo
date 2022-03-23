@@ -25,9 +25,26 @@ public class Algos {
         //Ne doit pas modifier le paramètre
         //Rappel : si c==0, on peut retourner la solution égale au point de départ puisque l'on est pas obligé d'utiliser les k pas
         // (on peut aussi retourner une solution plus longue si on veut)
+
+        // TODO: utiliser borne sup quand on l'aura codée
         //Remarque : quand vous aurez codé la borneSup, pensez à l'utiliser dans cet algorithme pour ajouter un cas de base
 
-        //à compléter
+        Solution sol = new Solution();
+        Instance instance = id.i;
+        Coord originalStartingPoint = new Coord(instance.getStartingP().getL(), instance.getStartingP().getC());
+        int nbPiecesPrises = 0;
+
+        if (id.c == 0) {
+            return new Solution(instance.getStartingP());
+        }
+
+        if (instance.getK() == 0) {
+
+        }
+
+        while (instance.getK() > 0) {
+            // sol = algo(sol + up)
+        }
 
         return null;
     }

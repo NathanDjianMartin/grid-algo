@@ -387,7 +387,9 @@ public class Instance {
      **** fin algo algo greedy                      ******
      *************************************************/
 
-
+    public Instance copy() {
+        return new Instance(this);
+    }
 
     public int borneSup(){
         //soit d0 la distance min entre la position de départ et une pièce
