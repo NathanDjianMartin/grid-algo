@@ -200,7 +200,9 @@ public class Instance {
      *************************************************/
 
 
-
+    /**
+     * Codée par nous
+     */
     public boolean estValide(Solution s) {
         //prérequis : s!=null, et les s.get(i) !=null pour tout i (mais par contre s peut contenir n'importe quelle séquence de coordonnées)
         //retourne vrai ssi s est une solution valide (une solution est valide ssi c'est une liste de coordonnées de
@@ -226,7 +228,9 @@ public class Instance {
         return true;
     }
 
-
+    /**
+     * Codée par nous
+     */
     public int evaluerSolution(Solution s) {
         //prerequis : s est valide (et donc !=null)
         //action : retourne le nombre de pièces ramassées par s (et ne doit pas modifier this ni s)
@@ -243,7 +247,10 @@ public class Instance {
     }
 
 
-
+    // TODO: à compléter
+    /**
+     * Codée par nous
+     */
     public int nbStepsToCollectAll(ArrayList<Integer> permut) {
 
         //prérequis : permut est une permutation des entiers {0,..,listeCoordPieces.size()-1}
@@ -261,7 +268,9 @@ public class Instance {
      *************************************************/
 
 
-
+    /**
+     * Codée par nous
+     */
     public ArrayList<Integer> greedyPermut() {
         //retourne une liste (x1,..,xp) où
         //x1 est la pièce la plus proche du point de départ
@@ -315,6 +324,9 @@ public class Instance {
     }
 
 
+    /**
+     * Codée par nous
+     */
     // la permutation c'est l'ordre dans lequel on va tenter de ramasser les pièces
     public Solution calculerSol(ArrayList<Integer> permut) {
 
@@ -363,6 +375,9 @@ public class Instance {
         return sol;
     }
 
+    /**
+     * Codée par nous
+     */
     private ArrayList<Coord> chemin(Coord piece1, Coord piece2) {
         ArrayList<Coord> result = new ArrayList<>();
         while (piece1.getC() != piece2.getC()){
@@ -388,6 +403,9 @@ public class Instance {
         return result;
     }
 
+    /**
+     * Codée par nous
+     */
     public Instance copy() {
         return new Instance(this);
     }
@@ -436,6 +454,10 @@ public class Instance {
      **** fin algo algo greedy                      ******
      *************************************************/
 
+    // TODO: à compléter
+    /**
+     * Codée par nous
+     */
     public int borneSup(){
         //soit d0 la distance min entre la position de départ et une pièce
         //soit {d1,..,dx} l'ensemble des distances entre pièces (donc x = (nbpiece-1)*npbpiece / 2), triées par ordre croissant

@@ -128,8 +128,12 @@ class App {
         int k6 = 60;
         Instance in6 = new Instance(p6,sp6,k6);
         int sg6 = in6.evaluerSolution(Algos.greedySolver(in6));
-        int sfpt6 = in6.evaluerSolution(Algos.algoFPT1(new InstanceDec(in6, 5)));
 
+        Solution toEvaluate = Algos.algoFPT1(new InstanceDec(in6, 1));
+        int sfpt6 = -1;
+        if (toEvaluate != null) {
+            sfpt6 = in6.evaluerSolution(toEvaluate);
+        }
         //int sfpt6 = in6.evaluerSolution(Algos.algoFPT1DPClient(new InstanceDec(in6,sg6+1)));
         System.out.println("greedy6 " + sg6 + " sfpt6 " + sfpt6);
 

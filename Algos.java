@@ -31,7 +31,7 @@ public class Algos {
 
         InstanceDec copyInstanceDec = id.copy();
         Instance copyInstance = copyInstanceDec.i;
-        Solution result = null;
+        Solution result = new Solution();
 
         if (copyInstance.piecePresente(copyInstance.getStartingP())) { // une pièce est présente,
             copyInstanceDec.c -= 1; // on la ramasse
@@ -61,8 +61,8 @@ public class Algos {
             if (upResult != null) {
                 result.add(id.i.getStartingP()); // result.add(me)
                 result.addAll(upResult);
+                return result;
             }
-            return result;
         }
 
         if (copyInstance.canGoDown(copyInstance.getStartingP())) {
@@ -80,8 +80,8 @@ public class Algos {
             if (downResult != null) {
                 result.add(id.i.getStartingP()); // result.add(me)
                 result.addAll(downResult);
+                return result;
             }
-            return result;
         }
 
         if (copyInstance.canGoLeft(copyInstance.getStartingP())) {
@@ -99,8 +99,8 @@ public class Algos {
             if (leftResult != null) {
                 result.add(id.i.getStartingP()); // result.add(me)
                 result.addAll(leftResult);
+                return result;
             }
-            return result;
         }
 
         if (copyInstance.canGoRight(copyInstance.getStartingP())) {
@@ -118,11 +118,11 @@ public class Algos {
             if (rightResult != null) {
                 result.add(id.i.getStartingP()); // result.add(me)
                 result.addAll(rightResult);
+                return result;
             }
-            return result;
         }
 
-        return result;
+        return null;
     }
 
 
