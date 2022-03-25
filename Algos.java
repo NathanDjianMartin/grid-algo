@@ -29,24 +29,100 @@ public class Algos {
         // TODO: utiliser borne sup quand on l'aura codée
         //Remarque : quand vous aurez codé la borneSup, pensez à l'utiliser dans cet algorithme pour ajouter un cas de base
 
-        Solution sol = new Solution();
-        Instance instance = id.i;
-        Coord originalStartingPoint = new Coord(instance.getStartingP().getL(), instance.getStartingP().getC());
-        int nbPiecesPrises = 0;
+        InstanceDec copyInstanceDec = id.copy();
+        Instance copyInstance = copyInstanceDec.i;
+        Solution result = null;
 
-        if (id.c == 0) {
-            return new Solution(instance.getStartingP());
+        if (copyInstance.piecePresente(copyInstance.getStartingP())) { // une pièce est présente,
+            copyInstanceDec.c -= 1; // on la ramasse
         }
 
-        if (instance.getK() == 0) {
-
+        if (copyInstanceDec.c <= 0) {
+            return new Solution(copyInstance.getStartingP());
         }
 
-        while (instance.getK() > 0) {
-            // sol = algo(sol + up)
+        if (copyInstance.getK() <= 0) {
+            return null;
         }
 
-        return null;
+
+        if (copyInstance.canGoUp(copyInstance.getStartingP())) {
+            // définit la coordonnée du voisin du haut
+            Coord instanceStartingPoint = copyInstance.getStartingP();
+            int line = instanceStartingPoint.getL() - 1;
+            int col = instanceStartingPoint.getC();
+            Coord voisinHaut = new Coord(line, col);
+
+            copyInstance.setK(copyInstance.getK() - 1); // on avance de 1 pas
+
+            copyInstance.setStartingP(voisinHaut); // avance vers le haut
+
+            Solution upResult = algoFPT1(copyInstanceDec);
+            if (upResult != null) {
+                result.add(id.i.getStartingP()); // result.add(me)
+                result.addAll(upResult);
+            }
+            return result;
+        }
+
+        if (copyInstance.canGoDown(copyInstance.getStartingP())) {
+            // définit la coordonnée du voisin du bas
+            Coord instanceStartingPoint = copyInstance.getStartingP();
+            int line = instanceStartingPoint.getL() + 1;
+            int col = instanceStartingPoint.getC();
+            Coord voisinBas = new Coord(line, col);
+
+            copyInstance.setK(copyInstance.getK() - 1); // on avance de 1 pas
+
+            copyInstance.setStartingP(voisinBas); // avance vers le haut
+
+            Solution downResult = algoFPT1(copyInstanceDec);
+            if (downResult != null) {
+                result.add(id.i.getStartingP()); // result.add(me)
+                result.addAll(downResult);
+            }
+            return result;
+        }
+
+        if (copyInstance.canGoLeft(copyInstance.getStartingP())) {
+            // définit la coordonnée du voisin du bas
+            Coord instanceStartingPoint = copyInstance.getStartingP();
+            int line = instanceStartingPoint.getL();
+            int col = instanceStartingPoint.getC() - 1;
+            Coord voisinGauche = new Coord(line, col);
+
+            copyInstance.setK(copyInstance.getK() - 1); // on avance de 1 pas
+
+            copyInstance.setStartingP(voisinGauche); // avance vers la gauche
+
+            Solution leftResult = algoFPT1(copyInstanceDec);
+            if (leftResult != null) {
+                result.add(id.i.getStartingP()); // result.add(me)
+                result.addAll(leftResult);
+            }
+            return result;
+        }
+
+        if (copyInstance.canGoRight(copyInstance.getStartingP())) {
+            // définit la coordonnée du voisin du bas
+            Coord instanceStartingPoint = copyInstance.getStartingP();
+            int line = instanceStartingPoint.getL();
+            int col = instanceStartingPoint.getC() + 1;
+            Coord voisinDroite = new Coord(line, col);
+
+            copyInstance.setK(copyInstance.getK() - 1); // on avance de 1 pas
+
+            copyInstance.setStartingP(voisinDroite); // avance vers la gauche
+
+            Solution rightResult = algoFPT1(copyInstanceDec);
+            if (rightResult != null) {
+                result.add(id.i.getStartingP()); // result.add(me)
+                result.addAll(rightResult);
+            }
+            return result;
+        }
+
+        return result;
     }
 
 

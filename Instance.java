@@ -230,9 +230,14 @@ public class Instance {
     public int evaluerSolution(Solution s) {
         //prerequis : s est valide (et donc !=null)
         //action : retourne le nombre de pièces ramassées par s (et ne doit pas modifier this ni s)
+
+
+        Instance copy = this.copy();
+
         int nbPieces = 0;
         for (Coord coordCourante : s) {
-            nbPieces = this.piecePresente(coordCourante) ? nbPieces + 1 : nbPieces;
+            nbPieces = copy.piecePresente(coordCourante) ? nbPieces + 1 : nbPieces;
+            copy.retirerPiece(coordCourante);
         }
         return nbPieces;
     }
@@ -383,13 +388,53 @@ public class Instance {
         return result;
     }
 
-    /************************************************
-     **** fin algo algo greedy                      ******
-     *************************************************/
-
     public Instance copy() {
         return new Instance(this);
     }
+
+    /**
+     * Retourne vrai si on peut aller en haut à partir de la coordonnée donnée.
+     * Faux si on sort du plateau
+     * @param coord la coordonnée à vérifier
+     * @return
+     */
+    public boolean canGoUp(Coord coord) {
+        return new Coord(coord.getL() - 1, coord.getC()).estDansPlateau(this.getNbL(), this.getNbC());
+    }
+
+    /**
+     * Retourne vrai si on peut aller en bas à partir de la coordonnée donnée.
+     * Faux si on sort du plateau
+     * @param coord la coordonnée à vérifier
+     * @return
+     */
+    public boolean canGoDown(Coord coord) {
+        return new Coord(coord.getL() + 1, coord.getC()).estDansPlateau(this.getNbL(), this.getNbC());
+    }
+
+    /**
+     * Retourne vrai si on peut aller à gauche à partir de la coordonnée donnée.
+     * Faux si on sort du plateau
+     * @param coord la coordonnée à vérifier
+     * @return
+     */
+    public boolean canGoLeft(Coord coord) {
+        return new Coord(coord.getL(), coord.getC() - 1).estDansPlateau(this.getNbL(), this.getNbC());
+    }
+
+    /**
+     * Retourne vrai si on peut aller à droite à partir de la coordonnée donnée.
+     * Faux si on sort du plateau
+     * @param coord la coordonnée à vérifier
+     * @return
+     */
+    public boolean canGoRight(Coord coord) {
+        return new Coord(coord.getL(), coord.getC() + 1).estDansPlateau(this.getNbL(), this.getNbC());
+    }
+
+    /************************************************
+     **** fin algo algo greedy                      ******
+     *************************************************/
 
     public int borneSup(){
         //soit d0 la distance min entre la position de départ et une pièce
