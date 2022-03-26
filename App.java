@@ -117,6 +117,7 @@ class App {
 
         // in6 : une instance que l'on configure comme on souhaite
 
+        /*
         boolean[][] p6 = new boolean[40][40];
         int[] l6 = {2,2,5,8,10,15,15,15,15,15,16,36,38,39};
         int[] c6 = {1,4,20,2,6,15,16,17,18,19,19,36,38,39};
@@ -129,7 +130,7 @@ class App {
         Instance in6 = new Instance(p6,sp6,k6);
         int sg6 = in6.evaluerSolution(Algos.greedySolver(in6));
 
-        Solution toEvaluate = Algos.algoFPT1(new InstanceDec(in6, 1));
+        Solution toEvaluate = Algos.algoFPT1(new InstanceDec(in6, sg6 + 1)); // c = valeur sol greedy + 1 pour essayer de le battre
         int sfpt6 = -1;
         if (toEvaluate != null) {
             sfpt6 = in6.evaluerSolution(toEvaluate);
@@ -137,6 +138,7 @@ class App {
         //int sfpt6 = in6.evaluerSolution(Algos.algoFPT1DPClient(new InstanceDec(in6,sg6+1)));
         System.out.println("greedy6 " + sg6 + " sfpt6 " + sfpt6);
 
+         */
 
         /************************************************
          **** comparaison des algos        ******

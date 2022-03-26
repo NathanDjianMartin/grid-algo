@@ -454,7 +454,6 @@ public class Instance {
      **** fin algo algo greedy                      ******
      *************************************************/
 
-    // TODO: à compléter
     /**
      * Codée par nous
      */
@@ -468,9 +467,37 @@ public class Instance {
         //(vous pouvez réfléchir au fait que c'est bien une borne supérieure)
         //(pour des exemples précis, cf les tests)
 
-        //à compléter
+        ArrayList<Integer> distances = new ArrayList<>();
 
+        // Récupération des distances entre toutes les pièces
+        for (int i = 0; i < this.getListeCoordPieces().size(); i++) {
+            Coord coordPiece1 = this.getListeCoordPieces().get(i);
+            for (int j = i; j < this.getListeCoordPieces().size(); j++) {
+                // j = i car pour ne pas calculer distance p1 et p2 et distance p2 et p1 par exemple (voir dessin Nathan)
+                Coord coordPiece2 = this.getListeCoordPieces().get(j);
+                int distance = coordPiece1.distanceFrom(coordPiece2);
+                distances.add(distance);
+            }
+        }
 
-        return 0;
+        // Tri des distances par ordre croissant
+        Collections.sort(distances);
+
+        int k = this.getK();
+        int distanceIndex = 0;
+        int piecesRamassees = 0;
+
+        // tant qu'on a des pas restants
+        while (k > 0) {
+            int distance = distances.get(distanceIndex); // distance courante
+            // même si k est positif, la prochaine pièce est peut-être trop loin
+            if (k - distance >= 0) {
+                piecesRamassees += 1;
+            }
+            distance += 1; // on passe à la distance suivante
+            k = k - distance; // on avance de k pas
+        }
+
+        return piecesRamassees;
     }
 }
